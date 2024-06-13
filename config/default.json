@@ -23,7 +23,7 @@
   "client_id": "7217834937634.7265480138597",
   "client_secret": "dd42e1072d56c97c7f1135a712bb3487",
   "signing_secret": "b9b500f7d847e5e7390128e7eace5445",
-  "state_secret": "xoxb-7217834937634-7265839298213-8EU3UiBsK4I3zOowDb2rRIzT",
+  "state_secret": "CHANGE ME",
   "oauth_success": "https://akvote-20ec526ed38d.herokuapp.com/?oauth=success",
   "oauth_failure": "https://akvote-20ec526ed38d.herokuapp.com/?oauth=error",
   "support_url": "https://www.buymeacoffee.com/polppol",
