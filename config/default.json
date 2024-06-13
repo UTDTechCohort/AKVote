@@ -27,7 +27,7 @@
   "oauth_success": "https://akvote-20ec526ed38d.herokuapp.com/?oauth=success",
   "oauth_failure": "https://akvote-20ec526ed38d.herokuapp.com/?oauth=error",
   "support_url": "https://www.buymeacoffee.com/polppol",
-  "mongo_url": "mongodb://localhost:27017",
+  "mongo_url": "mongodb+srv://acrobaticguy:BicyrfhtdZczLwBd@cluster0.1uxygef.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
   "mongo_db_name": "open_poll",
   "delete_data_on_poll_delete": true,
   "log_level_app": "debug",
