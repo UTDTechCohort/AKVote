@@ -1,7 +1,7 @@
 const { App, ExpressReceiver, LogLevel } = require('@slack/bolt');
 const config = require('config');
 
-const { MongoClient, ObjectId } = require('mongodb');
+// const { MongoClient, ObjectId } = require('mongodb');
 
 const { Migrations } = require('./utils/migrations');
 
@@ -66,7 +66,7 @@ const validTeamOverrideConfigTF = ["create_via_cmd_only","app_lang_user_selectab
 
 const validUserOverrideConfigTF = ["user_allow_dm"];
 
-const mClient = new MongoClient(config.get('mongo_url'));
+// const mClient = new MongoClient(config.get('mongo_url'));
 let orgCol = null;
 let userCol = null;
 let votesCol = null;
@@ -213,29 +213,29 @@ const loggerBolt = createLogger({
   transports: boltTransportsArray
 });
 
-logger.info('Server starting...');
+// logger.info('Server starting...');
 
-try {
-  logger.info('Connecting to database server...');
-  mClient.connect();
-  logger.info('Connected successfully to server')
-  const db = mClient.db(config.get('mongo_db_name'));
-  orgCol = db.collection('token');
-  userCol = db.collection('user_config');
-  votesCol = db.collection('votes');
-  closedCol = db.collection('closed');
-  hiddenCol = db.collection('hidden');
-  pollCol = db.collection('poll_data');
-  scheduleCol = db.collection('poll_schedule');
+// try {
+//   logger.info('Connecting to database server...');
+//   mClient.connect();
+//   logger.info('Connected successfully to server')
+//   // const db = mClient.db(config.get('mongo_db_name'));
+//   orgCol = db.collection('token');
+//   userCol = db.collection('user_config');
+//   votesCol = db.collection('votes');
+//   closedCol = db.collection('closed');
+//   hiddenCol = db.collection('hidden');
+//   pollCol = db.collection('poll_data');
+//   scheduleCol = db.collection('poll_schedule');
 
-  migrations = new Migrations(db);
-} catch (e) {
-  mClient.close();
-  logger.error(e)
-  logger.error(e.toString()+"\n"+e.stack);
-  console.log(e);
-  process.exit();
-}
+//   migrations = new Migrations(db);
+// } catch (e) {
+//   mClient.close();
+//   logger.error(e)
+//   logger.error(e.toString()+"\n"+e.stack);
+//   console.log(e);
+//   process.exit();
+// }
 
 const createDBIndex = async () => {
   orgCol.createIndex({"team.id": 1});
@@ -2779,27 +2779,27 @@ const createModalBlockInputDelete = (userLang)  => {
 };
 
 (async () => {
-  logger.info('Start database migration.');
-  await migrations.init();
-  await migrations.migrate();
-  logger.info('End database migration.')
+  // logger.info('Start database migration.');
+  // await migrations.init();
+  // await migrations.migrate();
+  // logger.info('End database migration.')
 
-  logger.info('Check create DB index if not exist...');
-  await createDBIndex();
+  // logger.info('Check create DB index if not exist...');
+  // await createDBIndex();
 
   await app.start(process.env.PORT || port);
 
   logger.info('Bolt app is running!');
 
-  logger.info('Check and start cron jobs.');
-  // Schedule the task checker to run every minute
-  cron.schedule('* * * * *', checkAndExecuteTasks);
-  // Cleanup every day
-  cron.schedule('0 22 * * *', autoCleanupTask);
+  // logger.info('Check and start cron jobs.');
+  // // Schedule the task checker to run every minute
+  // cron.schedule('* * * * *', checkAndExecuteTasks);
+  // // Cleanup every day
+  // cron.schedule('0 22 * * *', autoCleanupTask);
 
-  // Start the task checker immediately
-  checkAndExecuteTasks();
-  autoCleanupTask();
+  // // Start the task checker immediately
+  // checkAndExecuteTasks();
+  // autoCleanupTask();
 
 })();
 
@@ -6542,70 +6542,70 @@ function isValidISO8601(inputTS) {
   }
 }
 
-async function getAndlocalizeTimeStamp(botToken, userId, mongoDateObject) {
-  //const timeFormat = 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ';
-  //const iso8601Format = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO 8601 format
-  const timeFormat = gAppDatetimeFormat;
-  if (botToken == null || botToken === "" || userId == null || userId === "") return moment(mongoDateObject).format(timeFormat);
-  try {
-    const userInfo = await app.client.users.info({
-      token: botToken,
-      user: userId
-    });
+// async function getAndlocalizeTimeStamp(botToken, userId, mongoDateObject) {
+//   //const timeFormat = 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ';
+//   //const iso8601Format = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO 8601 format
+//   const timeFormat = gAppDatetimeFormat;
+//   if (botToken == null || botToken === "" || userId == null || userId === "") return moment(mongoDateObject).format(timeFormat);
+//   try {
+//     const userInfo = await app.client.users.info({
+//       token: botToken,
+//       user: userId
+//     });
 
-    //`Your time zone is: ${userInfo?.user?.tz} (${userInfo?.user?.tz_label}, Offset: ${userInfo?.user?.tz_offset} seconds)`
-    return localizeTimeStamp(userInfo?.user?.tz,  mongoDateObject);
-  } catch (e) {
-    return moment(mongoDateObject).format(timeFormat);
-  }
-}
+//     //`Your time zone is: ${userInfo?.user?.tz} (${userInfo?.user?.tz_label}, Offset: ${userInfo?.user?.tz_offset} seconds)`
+//     return localizeTimeStamp(userInfo?.user?.tz,  mongoDateObject);
+//   } catch (e) {
+//     return moment(mongoDateObject).format(timeFormat);
+//   }
+// }
 
-function localizeTimeStamp(tz,  mongoDateObject) {
-  //const timeFormat = 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ';
-  //const iso8601Format = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO 8601 format
-  const timeFormat = gAppDatetimeFormat;
-  if(mongoDateObject==null) return null;
-  if(tz===null||tz===undefined) return moment(mongoDateObject).format(timeFormat);
-  try {
-    return moment(mongoDateObject).tz(tz).format(timeFormat) + ` (${tz})`;
-  } catch (e) {
-    return moment(mongoDateObject).format(timeFormat);
-  }
-}
+// function localizeTimeStamp(tz,  mongoDateObject) {
+//   //const timeFormat = 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ';
+//   //const iso8601Format = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO 8601 format
+//   const timeFormat = gAppDatetimeFormat;
+//   if(mongoDateObject==null) return null;
+//   if(tz===null||tz===undefined) return moment(mongoDateObject).format(timeFormat);
+//   try {
+//     return moment(mongoDateObject).tz(tz).format(timeFormat) + ` (${tz})`;
+//   } catch (e) {
+//     return moment(mongoDateObject).format(timeFormat);
+//   }
+// }
 
-function getIANATimezoneFromISO8601(isoString) {
-  // Parse the ISO 8601 string
-  const momentDate = moment.parseZone(isoString);
+// function getIANATimezoneFromISO8601(isoString) {
+//   // Parse the ISO 8601 string
+//   const momentDate = moment.parseZone(isoString);
 
-  // Get the timezone offset in hours and minutes
-  const offset = momentDate.format('Z'); // e.g., +02:00
+//   // Get the timezone offset in hours and minutes
+//   const offset = momentDate.format('Z'); // e.g., +02:00
 
-  // Optional: Convert offset to IANA timezone name
-  // Note: This might not always be accurate
-  const ianaTimezones = moment.tz.names();
-  const matchingTimezone = ianaTimezones.find(tz => {
-    return moment.tz(tz).format('Z') === offset;
-  });
+//   // Optional: Convert offset to IANA timezone name
+//   // Note: This might not always be accurate
+//   const ianaTimezones = moment.tz.names();
+//   const matchingTimezone = ianaTimezones.find(tz => {
+//     return moment.tz(tz).format('Z') === offset;
+//   });
 
-  return matchingTimezone || offset; // returns IANA timezone name or the offset
-}
+//   return matchingTimezone || offset; // returns IANA timezone name or the offset
+// }
 
-function convertHoursToString(hourNumber) {
-  // Extract whole hours
-  let hours = Math.floor(hourNumber);
+// function convertHoursToString(hourNumber) {
+//   // Extract whole hours
+//   let hours = Math.floor(hourNumber);
 
-  // Convert fractional hours to minutes
-  let minutes = Math.round((hourNumber - hours) * 60);
+//   // Convert fractional hours to minutes
+//   let minutes = Math.round((hourNumber - hours) * 60);
 
-  // Adjust for when minutes round to 60
-  if (minutes === 60) {
-    hours += 1;
-    minutes = 0;
-  }
+//   // Adjust for when minutes round to 60
+//   if (minutes === 60) {
+//     hours += 1;
+//     minutes = 0;
+//   }
 
-  // Format the string
-  return `${hours}:${minutes.toString().padStart(2, '0')}`;
-}
+//   // Format the string
+//   return `${hours}:${minutes.toString().padStart(2, '0')}`;
+// }
 
 
 function toBoolean(value) {
