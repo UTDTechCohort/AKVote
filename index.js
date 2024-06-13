@@ -100,20 +100,20 @@ const standardQuote = `"`;
 
 console.log('Init Logger..');
 
-const prettyJson = format.printf(info => {
-  try {
-    if (info.message.constructor === Object) {
-      info.message = JSON.stringify(info.message, null, 4)
-    }
-  }
-  catch (e) {
-    console.error(e);
-    console.error(info);
-    info.message = JSON.stringify(info, null, 4)
-    return `${info.timestamp} ${info.level}: ${info.message}`
-  }
-  return `${info.timestamp} ${info.level}: ${info.message}`
-})
+// const prettyJson = format.printf(info => {
+//   try {
+//     if (info.message.constructor === Object) {
+//       info.message = JSON.stringify(info.message, null, 4)
+//     }
+//   }
+//   catch (e) {
+//     console.error(e);
+//     console.error(info);
+//     info.message = JSON.stringify(info, null, 4)
+//     return `${info.timestamp} ${info.level}: ${info.message}`
+//   }
+//   return `${info.timestamp} ${info.level}: ${info.message}`
+// })
 
 const appTransportsArray = [
   new transports.Console({
