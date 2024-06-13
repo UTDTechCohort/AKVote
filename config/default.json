@@ -1,8 +1,8 @@
 {
   "port": 8080,
   "command": "poll",
-  "command2": "openpoll",
-  "bot_name": "Open Poll Plus",
+  "command2": "vote",
+  "bot_name": "AKVote",
   "app_lang": "en",
   "app_lang_user_selectable": true,
   "app_allow_dm": true,
