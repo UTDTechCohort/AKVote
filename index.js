@@ -3715,6 +3715,12 @@ async function createModal(context, client, trigger_id,response_url,channel) {
       {
         type: 'divider',
       },
+            {
+              text: {
+                type: 'mrkdwn',
+                text: "I have added some text huehuehue"
+              },
+            },
       {
         type: 'section',
         block_id: 'options',
