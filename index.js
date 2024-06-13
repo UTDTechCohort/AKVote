@@ -1474,7 +1474,7 @@ async function processCommand(ack, body, client, command, context, say, respond)
       let endDateTime = null;
 
 
-      while (fetchArgs) {
+      while (fetchArgs) { //reads through the arguments one by one adjusting the response as neccessary
         fetchArgs = false;
         if (cmdBody.startsWith('anonymous')) {
           fetchArgs = true;
