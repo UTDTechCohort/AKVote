@@ -4864,26 +4864,26 @@ async function createPollView(teamOrEntId,channel, question, options, isAnonymou
   }
 
   let elements = [];
-  if (isAnonymous || isLimited || isHidden) {
-    if (isAnonymous) {
-      elements.push({
-        type: 'mrkdwn',
-        text: stri18n(userLang,'info_anonymous'),
-      });
-    }
-    if (isLimited) {
-      elements.push({
-        type: 'mrkdwn',
-        text: parameterizedString(stri18n(userLang,'info_limited'),{limit:limit})+stri18n(userLang,'info_s'),
-      });
-    }
-    if (isHidden) {
-      elements.push({
-        type: 'mrkdwn',
-        text: stri18n(userLang,'info_hidden'),
-      });
-    }
-  }
+  // if (isAnonymous || isLimited || isHidden) {
+  //   if (isAnonymous) {
+  //     elements.push({
+  //       type: 'mrkdwn',
+  //       text: stri18n(userLang,'info_anonymous'),
+  //     });
+  //   }
+  //   if (isLimited) {
+  //     elements.push({
+  //       type: 'mrkdwn',
+  //       text: parameterizedString(stri18n(userLang,'info_limited'),{limit:limit})+stri18n(userLang,'info_s'),
+  //     });
+  //   }
+  //   if (isHidden) {
+  //     elements.push({
+  //       type: 'mrkdwn',
+  //       text: stri18n(userLang,'info_hidden'),
+  //     });
+  //   }
+  // }
   elements.push({
     type: 'mrkdwn',
     text: parameterizedString(stri18n(userLang,'info_by'),{user_id:userId}),
