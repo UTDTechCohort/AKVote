@@ -3102,7 +3102,15 @@ app.action('btn_vote', async ({ action, ack, body, context }) => {
           }
 
           if (removeVote) {
-            voteCount -= 1;
+              let mRequestBody = {
+                token: context.botToken,
+                channel: body.channel.id,
+                user: body.user.id,
+                attachments: [],
+                text: stri18n(userLang, 'err_cannot_remove_vote'),
+              };
+              await postChat(body.response_url, 'ephemeral', mRequestBody);
+              return;
           }
 
           if (voteCount >= value.limit) {
@@ -5433,7 +5441,9 @@ async function usersVotes(body, client, context, value) {
       });
     }
   }
-
+  votes.push({
+    type: 'divider',
+  });
   votes.push({
     type: 'context',
     elements: [{
