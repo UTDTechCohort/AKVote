@@ -4242,6 +4242,7 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
 
     if (state.values) {
       for (const optionName in state.values) {
+        console.log(optionName);
         const option = state.values[optionName][Object.keys(state.values[optionName])[0]];
         if ('question' === optionName) {
           question = option.value;
