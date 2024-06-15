@@ -5420,7 +5420,7 @@ async function usersVotes(body, client, context, value) {
           type: 'mrkdwn',
           text: !voters.length
             ? stri18n(userLang,'info_no_vote')
-            : voters.map(el => {
+            : value.hasOwnProperty('anonymous') ? voters.length.toString() : voters.map(el => {
                 return `<@${el}>`;
               }).join(', '),
         }],
