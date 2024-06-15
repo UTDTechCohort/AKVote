@@ -5413,7 +5413,7 @@ async function usersVotes(body, client, context, value) {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: splitstring[0],
+          text: value.hasOwnProperty('hidden') ? splitstring[0] : block.text.text, //if it is hidden, remove useless line about vote being hidden, if not, show entire vote block
         },
       });
       votes.push({
@@ -5422,7 +5422,7 @@ async function usersVotes(body, client, context, value) {
           type: 'mrkdwn',
           text: !voters.length
             ? stri18n(userLang,'info_no_vote')
-            : value.hasOwnProperty('anonymous') ? voters.length.toString() : voters.map(el => {
+            : value.hasOwnProperty('anonymous') ? "Number of votes: " + voters.length.toString() : voters.map(el => {
                 return `<@${el}>`;
               }).join(', '),
         }],
