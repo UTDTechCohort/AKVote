@@ -5391,6 +5391,9 @@ async function usersVotes(body, client, context, value) {
   }
 
   let userLang = appLang;
+
+  let totalVoteCount = 0;
+
   for (const block of blocks) {
     if (
       block.hasOwnProperty('accessory')
@@ -5404,6 +5407,7 @@ async function usersVotes(body, client, context, value) {
         if(value.user_lang!=="" && value.user_lang != null)
           userLang = value.user_lang;
 
+      totalVoteCount += voters.length;
       console.log(block.text.text + "\n" + JSON.stringify(value));
       const splitstring = block.text.text.split("\n");
       votes.push({
@@ -5429,6 +5433,14 @@ async function usersVotes(body, client, context, value) {
       });
     }
   }
+
+  votes.push({
+    type: 'context',
+    elements: [{
+      type: 'mrkdwn',
+      text: "Total Number of Votes" + ": " + totalVoteCount.toString(),
+    }],
+  });
 
   try {
     await client.views.open({
