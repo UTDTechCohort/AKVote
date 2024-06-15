@@ -5,7 +5,7 @@
   "info_anonymous": ":shushing_face: Anonymous poll",
   "info_anonymous_vote": "You have anonymously voted in the poll.",
   "info_anonymous_unvote": "You have anonymously unvoted in the poll.",
-  "err_cannot_remove_vote": "You can't remove vote from anonymous poll.",
+  "err_cannot_remove_vote": "You can't remove your vote from an anonymous poll.",
   "info_anonymous_notice": "NOTE: Poll creator still can see who voted which options",
   "info_limited": ":warning: Limited to `{{limit}}` vote",
   "info_s": "s",
