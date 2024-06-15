@@ -4637,7 +4637,7 @@ app.view('modal_delete_confirm', async ({ ack, body, view, context }) => {
     console.trace();
   }
 });
-function createCmdFromInfos(question, options, isAnonymous, isLimited, limit, isHidden, isAllowUserAddChoice, isYesNo, userLang, postDateTime, endisoStr) {
+function createCmdFromInfos(question, options, isAnonymous, isLimited, limit, isHidden, isAllowUserAddChoice, userLang, postDateTime, endisoStr) {
   let cmd = `/${slackCommand}`;
   if (isAnonymous) {
     cmd += ` anonymous`
