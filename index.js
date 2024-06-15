@@ -5334,21 +5334,21 @@ async function usersVotes(body, client, context, value) {
     return;
   }
 
-  if(value.hasOwnProperty('anonymous') && value.hasOwnProperty('true_anonymous'))
-  {
-    if(value.anonymous===true&&value.true_anonymous===true) {
-      let mRequestBody = {
-        token: context.botToken,
-        channel: body.channel.id,
-        user: body.user.id,
-        attachments: [],
-        text: stri18n(appLang,'err_see_all_vote_true_anonymous'),
-      };
-      await postChat(body.response_url,'ephemeral',mRequestBody);
+  // if(value.hasOwnProperty('anonymous') && value.hasOwnProperty('true_anonymous'))
+  // {
+  //   if(value.anonymous===true&&value.true_anonymous===true) {
+  //     let mRequestBody = {
+  //       token: context.botToken,
+  //       channel: body.channel.id,
+  //       user: body.user.id,
+  //       attachments: [],
+  //       text: stri18n(appLang,'err_see_all_vote_true_anonymous'),
+  //     };
+  //     await postChat(body.response_url,'ephemeral',mRequestBody);
 
-      return;
-    }
-  }
+  //     return;
+  //   }
+  // }
 
   const message = body.message;
   const channel = body.channel.id;
