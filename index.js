@@ -5404,6 +5404,8 @@ async function usersVotes(body, client, context, value) {
         if(value.user_lang!=="" && value.user_lang != null)
           userLang = value.user_lang;
 
+      console.log(block.text.text + "\n" + JSON.stringify(value));
+      const splitstring = block.text.text.split("\n");
       votes.push({
         type: 'divider',
       });
@@ -5411,7 +5413,7 @@ async function usersVotes(body, client, context, value) {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: block.text.text,//voters.length.toString(),
+          text: splitstring[0],
         },
       });
       votes.push({
