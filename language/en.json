@@ -39,7 +39,7 @@
   "menu_delete_poll": "Delete the poll",
   "menu_reveal_vote": "Reveal votes",
   "menu_hide_vote": "Hide votes",
-  "menu_all_user_vote": "AFTER CLOSED: See final votes",
+  "menu_all_user_vote": "See current vote tally",
   "menu_poll_action": "Poll actions",
   "menu_user_action": "User actions",
   "menu_user_self_vote": "See your votes",
