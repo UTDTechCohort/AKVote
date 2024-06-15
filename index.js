@@ -5617,7 +5617,7 @@ async function revealOrHideVotes(body, context, value) {
           && b.accessory.hasOwnProperty('value')
         ) {
           let val = JSON.parse(b.accessory.value);
-          console.log("This is the val variable: " + val + "\n");
+          JSON.stringify(val);
           val.hidden = isHidden;
 
           val.voters = poll[val.id];
