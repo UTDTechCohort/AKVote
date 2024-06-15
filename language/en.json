@@ -71,6 +71,8 @@
   "modal_input_choice_add": "+ Add a choice",
   "modal_input_choice": "Write your choice",
   "modal_ch_manual_select": "Select a channel to post the poll",
+  "modal_option_yesno": "Yes/No Poll",
+  "modal_option_yesno_hint": "This option changes the emojis to be a check & x respectively",
   "modal_ch_select": "Select a channel",
   "modal_ch_response_url": "response_url :",
   "modal_ch_response_url_auto": "The poll will be posted to the current channel",

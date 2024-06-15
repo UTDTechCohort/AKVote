@@ -3777,6 +3777,17 @@ async function createModal(context, client, trigger_id,response_url,channel) {
                 text: stri18n(appLang,'modal_option_add_choice_hint')
               },
               value: 'user_add_choice'
+            },
+            { //changes the emojis
+              text: {
+                type: 'mrkdwn',
+                text: stri18n(appLang,'modal_option_yesno')
+              },
+              description: {
+                type: 'mrkdwn',
+                text: stri18n(appLang,'modal_option_yesno_hint')
+              },
+              value: 'yesno'
             }
           ]
         }
