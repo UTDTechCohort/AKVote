@@ -6451,7 +6451,7 @@ function buildVoteBlock(btn_value, option_text, isCompactUI, isShowDivider, isSh
   if(isShowNumberInChoice) emojiPrefix = slackNumToEmoji(voteId+1,userLang)+" ";
   if(isShowNumberInChoiceBtn) emojiBthPostfix = " "+slackNumToEmoji(voteId+1,userLang);
   let compactVoteTxt = "";
-  if(isCompactUI) compactVoteTxt = "\n" + (btn_value['hidden'] ? stri18n(userLang,'info_wait_reveal') : stri18n(userLang,'info_no_vote')) ;
+  if(isCompactUI) compactVoteTxt = "\n" + (btn_value['hidden'] ? "" : stri18n(userLang,'info_no_vote')) ;
   let block = {
     type: 'section',
     text: {
