@@ -6374,24 +6374,24 @@ async function buildInfosBlocks(blocks, pollInfos,userLang) {
   const infosBlocks = [];
   const infos = await getInfos(['anonymous', 'limited', 'limit', 'hidden', 'closed'], blocks, pollInfos);
 
-  if (infos.anonymous) {
-    infosBlocks.push({
-      type: 'mrkdwn',
-      text: stri18n(userLang,'info_anonymous'),
-    });
-  }
-  if (infos.limited) {
-    infosBlocks.push({
-      type: 'mrkdwn',
-      text : parameterizedString(stri18n(userLang,'info_limited'),{limit:infos.limit})+stri18n(userLang,'info_s'),
-    });
-  }
-  if (infos.hidden) {
-    infosBlocks.push({
-      type: 'mrkdwn',
-      text: stri18n(userLang,'info_hidden'),
-    });
-  }
+  // if (infos.anonymous) {
+  //   infosBlocks.push({
+  //     type: 'mrkdwn',
+  //     text: stri18n(userLang,'info_anonymous'),
+  //   });
+  // }
+  // if (infos.limited) {
+  //   infosBlocks.push({
+  //     type: 'mrkdwn',
+  //     text : parameterizedString(stri18n(userLang,'info_limited'),{limit:infos.limit})+stri18n(userLang,'info_s'),
+  //   });
+  // }
+  // if (infos.hidden) {
+  //   infosBlocks.push({
+  //     type: 'mrkdwn',
+  //     text: stri18n(userLang,'info_hidden'),
+  //   });
+  // }
   if (infos.closed) {
     infosBlocks.push({
       type: 'mrkdwn',
