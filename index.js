@@ -3375,7 +3375,7 @@ app.action('add_choice_after_post', async ({ ack, body, action, context,client }
             elements: [
               {
                 type: 'mrkdwn',
-                text: lastestVoteBtnVal['hidden'] ? stri18n(userLang, 'info_wait_reveal') : stri18n(userLang, 'info_no_vote'),
+                text: lastestVoteBtnVal['hidden'] ? "" : stri18n(userLang, 'info_no_vote'),
               }
             ],
           };
@@ -4926,7 +4926,7 @@ async function createPollView(teamOrEntId,channel, question, options, isAnonymou
         elements: [
           {
             type: 'mrkdwn',
-            text: btn_value['hidden'] ? stri18n(userLang,'info_wait_reveal') : stri18n(userLang,'info_no_vote'),
+            text: btn_value['hidden'] ? "" : stri18n(userLang,'info_no_vote'),
           }
         ],
       };
@@ -6501,7 +6501,7 @@ async function updateVoteBlock(team,channel,ts,blocks,poll,userLang,isHidden,isC
       let newVoters = '';
 
       if (isHidden) {
-        newVoters = stri18n(userLang, 'info_wait_reveal');
+        newVoters = "";
       } else if (poll[val.id].length === 0) {
         newVoters = stri18n(userLang, 'info_no_vote');
       } else {
