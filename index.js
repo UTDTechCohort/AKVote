@@ -5649,7 +5649,7 @@ async function revealOrHideVotes(body, context, value) {
           let newVoters = '';
 
           if (isHidden) {
-            newVoters = stri18n(userLang,'info_wait_reveal');
+            newVoters = newVoters;
           } else {
             if (poll[val.id].length === 0) {
               newVoters = stri18n(userLang,'info_no_vote');
