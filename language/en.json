@@ -16,7 +16,7 @@
   "info_not_vote_yet": "You have not voted yet",
   "info_your_vote": "Your votes",
   "info_close": "Close",
-  "info_by": ":by <@{{user_id}}>",
+  "info_by": "by <@{{user_id}}>",
   "info_addon": "",
   "info_all_user_vote": "Users votes",
   "info_need_help": "Need help ? | <mailto:{{email}}|E-Mail> | <{{link}}|URL>\nPlease report any wrong translation, we will fix it for you!",
