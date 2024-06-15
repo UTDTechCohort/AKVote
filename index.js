@@ -5411,7 +5411,7 @@ async function usersVotes(body, client, context, value) {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: block.text.text,
+          text: voters.length,
         },
       });
       votes.push({
