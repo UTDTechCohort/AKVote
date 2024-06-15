@@ -17,7 +17,7 @@
   "help_email": "https://github.com/polppol/openpollslack-i18n",
   "compact_ui": true,
   "show_divider": true,
-  "show_help_link": true,
+  "show_help_link": false,
   "show_command_info": false,
   "true_anonymous": true,
   "client_id": "7217834937634.7265480138597",
