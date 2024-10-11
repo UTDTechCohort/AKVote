@@ -113,22 +113,28 @@ async function getPresentUsernames() {
     const rosterRows = await rosterSheet.getCellsInRange('D2:D99');
     const rosterPresent = rosterRows.map(row => row[0]);
 
-    const slackRows = await channelSheet.getCellsInRange('E2:E99');
+    const slackRows = await channelSheet.getCellsInRange('F2:F99');
     const slackNameList = slackRows.map(row => row[0]);
 
-    // Create a list of present usernames
-    const presentUsernames = [];
+    const memberIDs = await channelSheet.getCellsInRange('E2:E99');
+    const memberIDsList = memberIDs.map(row => row[0]);
+
+    // Create a Map of present usernames to user IDs
+    const presentUserMap = new Map();
 
     for (let i = 0; i < rosterPresent.length; i++) {
       if (rosterPresent[i] === 'TRUE') {
-        // Remove '@' and ',' characters using replace
+        // Remove '@' and ',' characters using replace and trim spaces
         const cleanedUsername = slackNameList[i].replace(/[@,]/g, '').trim();
-        presentUsernames.push(cleanedUsername);
+        const userId = memberIDsList[i];
+        // Add the username and corresponding ID to the map
+        presentUserMap.set(userID, cleanedUsername);
       }
     }
 
-    console.log("Present Usernames: ", presentUsernames);
-    return presentUsernames;
+    console.log("Present User Map: ", presentUserMap);
+    return presentUserMap;
+
   } catch (error) {
     console.error('Error processing spreadsheet:', error);
   }
@@ -5468,9 +5474,7 @@ async function usersVotes(body, client, context, value) {
 
   let totalVoteCount = 0;
 
-  let allVoters = []
-
-  let allAbsentMindedVoters = await getPresentUsernames() || [];
+  let allAbsentMindedVoters = await getPresentUsernames() || new Map();
 
   for (const block of blocks) {
     if (
@@ -5482,9 +5486,12 @@ async function usersVotes(body, client, context, value) {
 
       voters.map(e1 => {
         console.log(e1);
-        allVoters.push(e1);
-        console.log("All Voters", allVoters);
-        allAbsentMindedVoters.filter(username => username != e1);
+        allAbsentMindedVoters.forEach((userId, username) => {
+          if (userId === e1) {
+            allAbsentMindedVoters.delete(username);
+          }
+        });
+        console.log('Updated Absent-Minded Voters Map:', Array.from(allAbsentMindedVoters.entries()));
       });
 
       if(value.hasOwnProperty('user_lang'))
@@ -5537,11 +5544,12 @@ async function usersVotes(body, client, context, value) {
     type: 'context',
     elements: [{
       type: 'mrkdwn',
-      text: !allAbsentMindedVoters.length
-            ? stri18n(userLang,'info_no_vote')
-            : "Who Has Not Voted Yet: \n" + allAbsentMindedVoters.map(el => {
-                return `<@${el}>`;
-              }).join(', '),
+      text: allAbsentMindedVoters.size === 0
+        ? stri18n(userLang, 'info_no_vote')
+        : "Who Has Not Voted Yet: \n" + 
+          Array.from(allAbsentMindedVoters.values()).map(userId => {
+            return `<@${userId}>`;
+          }).join(', '),
     }]
   });
   
