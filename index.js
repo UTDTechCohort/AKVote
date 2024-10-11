@@ -128,7 +128,7 @@ async function getPresentUsernames() {
         const cleanedUsername = slackNameList[i].replace(/[@,]/g, '').trim();
         const userId = memberIDsList[i];
         // Add the username and corresponding ID to the map
-        presentUserMap.set(userID, cleanedUsername);
+        presentUserMap.set(userId, cleanedUsername);
       }
     }
 
