@@ -80,15 +80,18 @@ let migrations = null;
 const mutexes = {};
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const { JWT } = require('google-auth-library')
+const { JWT } = require('google-auth-library');
 
 // Load service account credentials from a local JSON file
 const creds = require('./service_account.json');
 
 // Setup the service account authentication
+console.log('Cred email: ' + creds.client_email)
+console.log('Cred Private Key: ' + creds.private_key);
+
 const serviceAccountAuth = new JWT({
   email: creds.client_email,
-  key: creds.private_key.replace(/\\n/g, '\n'), // Replace escaped newlines
+  key: creds.private_key,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
