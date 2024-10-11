@@ -81,23 +81,22 @@ const mutexes = {};
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-// Google Sheets setup
-const creds = require('./service_account.json'); // Replace with the path to your credentials file
-const doc = new GoogleSpreadsheet('1TuHM4TZVvA1nxWEB-2vjULfs17QeS1gYceu9DQVo3Gw');
-const rosterDoc = new GoogleSpreadsheet('14b6VL7hdvtidPtJ5ajSAr3tyJqJAg0SW8WcJsgMJ0Rc');
+// Load service account credentials from a local JSON file
+const creds = require('./service_account.json');
+
+// Setup the service account authentication
+const serviceAccountAuth = new JWT({
+  email: creds.client_email,
+  key: creds.private_key.replace(/\\n/g, '\n'), // Replace escaped newlines
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+// Initialize the Google Spreadsheets
+const doc = new GoogleSpreadsheet('1TuHM4TZVvA1nxWEB-2vjULfs17QeS1gYceu9DQVo3Gw', serviceAccountAuth);
+const rosterDoc = new GoogleSpreadsheet('14b6VL7hdvtidPtJ5ajSAr3tyJqJAg0SW8WcJsgMJ0Rc', serviceAccountAuth);
 
 async function getPresentUsernames() {
   try {
-    // Authenticate with Google Sheets API using the new method
-    await doc.useServiceAccountAuth({
-      client_email: creds.client_email,
-      private_key: creds.private_key.replace(/\\n/g, '\n'), // Handle newline issues in private key
-    });
-    await rosterDoc.useServiceAccountAuth({
-      client_email: creds.client_email,
-      private_key: creds.private_key.replace(/\\n/g, '\n'),
-    });
-
     // Load the spreadsheets
     await doc.loadInfo();
     await rosterDoc.loadInfo();
