@@ -5526,8 +5526,6 @@ async function usersVotes(body, client, context, value) {
   
   processVoters();
 
-  console.log('People who have not voted yet:', absentMindedVoters);
-
   votes.push({
     type: 'divider',
   });
