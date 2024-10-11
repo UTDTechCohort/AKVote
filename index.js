@@ -78,13 +78,13 @@ let scheduleCol = null;
 let migrations = null;
 
 const mutexes = {};
-/*
+
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 // Google Sheets setup
 const creds = require('./service_account.json'); // Replace with the path to your credentials file
-const doc = new GoogleSpreadsheet('Channel Adder Master List Spreadsheet ID');
-const rosterDoc = new GoogleSpreadsheet('Mu Rho Roster Fall 2024 Spreadsheet ID');
+const doc = new GoogleSpreadsheet('1TuHM4TZVvA1nxWEB-2vjULfs17QeS1gYceu9DQVo3Gw');
+const rosterDoc = new GoogleSpreadsheet('14b6VL7hdvtidPtJ5ajSAr3tyJqJAg0SW8WcJsgMJ0Rc');
 
 async function getPresentUsernames() {
   try {
@@ -97,11 +97,11 @@ async function getPresentUsernames() {
     await rosterDoc.loadInfo();
 
     // Get the worksheets
-    const rosterSheet = rosterDoc.sheetsByIndex[3]; // 3 corresponds to the fourth worksheet (zero-indexed)
+    const rosterSheet = rosterDoc.sheetsByIndex[2]; // 2 corresponds to the third worksheet (zero-indexed)
     const channelSheet = doc.sheetsByIndex[0]; // Assuming it's the first sheet (zero-indexed)
 
     // Get the data
-    const rosterRows = await rosterSheet.getCellsInRange('F2:F99');
+    const rosterRows = await rosterSheet.getCellsInRange('D2:D99');
     const rosterPresent = rosterRows.map(row => row[0]);
 
     const slackRows = await channelSheet.getCellsInRange('E2:E99');
@@ -112,7 +112,9 @@ async function getPresentUsernames() {
 
     for (let i = 0; i < rosterPresent.length; i++) {
       if (rosterPresent[i] === 'TRUE') {
-        presentUsernames.push(slackNameList[i]);
+        // Remove '@' and ',' characters using replace
+        const cleanedUsername = slackNameList[i].replace(/[@,]/g, '');
+        presentUsernames.push(cleanedUsername);
       }
     }
 
@@ -125,7 +127,7 @@ async function getPresentUsernames() {
 getPresentUsernames().then((usernames) => {
   console.log('Present Usernames:', usernames);
 });
-*/
+
 
 
 // Define the accepted quotes and the standard quote
@@ -5503,6 +5505,16 @@ async function usersVotes(body, client, context, value) {
       });
     }
   }
+  //Gather all potential voters in channel
+  //Subtract the current voters to get the voters who haven't voted yet
+  const allPotentialChannelVoters = getPresentUsernames();
+
+  const absentMindedVoters = allVoters.filter((e1) => {
+    return !allPotentialChannelVoters.includes(e1);
+  });
+
+  console.log('People who have not voted yet:', absentMindedVoters);
+
   votes.push({
     type: 'divider',
   });
@@ -5522,7 +5534,7 @@ async function usersVotes(body, client, context, value) {
       type: 'mrkdwn',
       text: !allVoters.length
             ? stri18n(userLang,'info_no_vote')
-            : "Who's Voted \n" + allVoters.map(el => {
+            : "Who Has Not Voted Yet \n" + absentMindedVoters.map(el => {
                 return `<@${el}>`;
               }).join(', '),
     }]
