@@ -5507,11 +5507,13 @@ async function usersVotes(body, client, context, value) {
   }
   //Gather all potential voters in channel
   //Subtract the current voters to get the voters who haven't voted yet
-  const allPotentialChannelVoters = getPresentUsernames();
+  const allPotentialChannelVoters = getPresentUsernames() || [];
 
-  const absentMindedVoters = allVoters.filter((e1) => {
+  const absentMindedVoters = (allVoters || []).filter((e1) => {
     return !allPotentialChannelVoters.includes(e1);
   });
+
+
 
   console.log('People who have not voted yet:', absentMindedVoters);
 
@@ -5532,7 +5534,7 @@ async function usersVotes(body, client, context, value) {
     type: 'context',
     elements: [{
       type: 'mrkdwn',
-      text: !allVoters.length
+      text: !absentMindedVoters.length
             ? stri18n(userLang,'info_no_vote')
             : "Who Has Not Voted Yet \n" + absentMindedVoters.map(el => {
                 return `<@${el}>`;
