@@ -122,7 +122,7 @@ async function getPresentUsernames() {
     for (let i = 0; i < rosterPresent.length; i++) {
       if (rosterPresent[i] === 'TRUE') {
         // Remove '@' and ',' characters using replace
-        const cleanedUsername = slackNameList[i].replace(/[@,]/g, '');
+        const cleanedUsername = slackNameList[i].replace(/[@,]/g, '').trim();
         presentUsernames.push(cleanedUsername);
       }
     }
