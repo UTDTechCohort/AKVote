@@ -5516,6 +5516,18 @@ async function usersVotes(body, client, context, value) {
       const absentMindedVoters = (allVoters || []).filter((e1) => {
         return !allPotentialChannelVoters.includes(e1);
       });
+
+      votes.push({
+        type: 'context',
+        elements: [{
+          type: 'mrkdwn',
+          text: !absentMindedVoters.length
+                ? stri18n(userLang,'info_no_vote')
+                : "Who Has Not Voted Yet \n" + absentMindedVoters.map(el => {
+                    return `<@${el}>`;
+                  }).join(', '),
+        }]
+      });
   
       console.log('Absent-Minded Voters:', absentMindedVoters);
       return absentMindedVoters;
@@ -5524,8 +5536,7 @@ async function usersVotes(body, client, context, value) {
     }
   }
   
-  processVoters();
-
+  
   votes.push({
     type: 'divider',
   });
@@ -5538,18 +5549,9 @@ async function usersVotes(body, client, context, value) {
   });
   votes.push({
     type: 'divider',
-  })
-  votes.push({
-    type: 'context',
-    elements: [{
-      type: 'mrkdwn',
-      text: !absentMindedVoters.length
-            ? stri18n(userLang,'info_no_vote')
-            : "Who Has Not Voted Yet \n" + absentMindedVoters.map(el => {
-                return `<@${el}>`;
-              }).join(', '),
-    }]
-  })
+  });
+  processVoters();
+  
 
   try {
     await client.views.open({
