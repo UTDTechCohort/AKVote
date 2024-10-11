@@ -78,6 +78,55 @@ let scheduleCol = null;
 let migrations = null;
 
 const mutexes = {};
+/*
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+
+// Google Sheets setup
+const creds = require('./service_account.json'); // Replace with the path to your credentials file
+const doc = new GoogleSpreadsheet('Channel Adder Master List Spreadsheet ID');
+const rosterDoc = new GoogleSpreadsheet('Mu Rho Roster Fall 2024 Spreadsheet ID');
+
+async function getPresentUsernames() {
+  try {
+    // Authenticate with Google Sheets API
+    await doc.useServiceAccountAuth(creds);
+    await rosterDoc.useServiceAccountAuth(creds);
+
+    // Load the spreadsheets
+    await doc.loadInfo();
+    await rosterDoc.loadInfo();
+
+    // Get the worksheets
+    const rosterSheet = rosterDoc.sheetsByIndex[3]; // 3 corresponds to the fourth worksheet (zero-indexed)
+    const channelSheet = doc.sheetsByIndex[0]; // Assuming it's the first sheet (zero-indexed)
+
+    // Get the data
+    const rosterRows = await rosterSheet.getCellsInRange('F2:F99');
+    const rosterPresent = rosterRows.map(row => row[0]);
+
+    const slackRows = await channelSheet.getCellsInRange('E2:E99');
+    const slackNameList = slackRows.map(row => row[0]);
+
+    // Create a list of present usernames
+    const presentUsernames = [];
+
+    for (let i = 0; i < rosterPresent.length; i++) {
+      if (rosterPresent[i] === 'TRUE') {
+        presentUsernames.push(slackNameList[i]);
+      }
+    }
+
+    return presentUsernames;
+  } catch (error) {
+    console.error('Error processing spreadsheet:', error);
+  }
+}
+
+getPresentUsernames().then((usernames) => {
+  console.log('Present Usernames:', usernames);
+});
+*/
+
 
 // Define the accepted quotes and the standard quote
 const acceptedQuotes = [
@@ -5407,6 +5456,8 @@ async function usersVotes(body, client, context, value) {
 
   let totalVoteCount = 0;
 
+  let allVoters = []
+
   for (const block of blocks) {
     if (
       block.hasOwnProperty('accessory')
@@ -5415,6 +5466,10 @@ async function usersVotes(body, client, context, value) {
       const value = JSON.parse(block.accessory.value);
       const voters = poll ? (poll[value.id] || []) : [];
 
+      voters.map(e1 => {
+        console.log(e1)
+        allVoters.push(e1)
+      });
 
       if(value.hasOwnProperty('user_lang'))
         if(value.user_lang!=="" && value.user_lang != null)
@@ -5423,6 +5478,8 @@ async function usersVotes(body, client, context, value) {
       totalVoteCount += voters.length;
       console.log(block.text.text + "\n" + JSON.stringify(value));
       const splitstring = block.text.text.split("\n");
+
+
       votes.push({
         type: 'divider',
       });
@@ -5456,6 +5513,20 @@ async function usersVotes(body, client, context, value) {
       text: "Total Number of Votes" + ": " + totalVoteCount.toString(),
     }],
   });
+  votes.push({
+    type: 'divider',
+  })
+  votes.push({
+    type: 'context',
+    elements: [{
+      type: 'mrkdwn',
+      text: !allVoters.length
+            ? stri18n(userLang,'info_no_vote')
+            : "Who's Voted \n" + allVoters.map(el => {
+                return `<@${el}>`;
+              }).join(', '),
+    }]
+  })
 
   try {
     await client.views.open({
