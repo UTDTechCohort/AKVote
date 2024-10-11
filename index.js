@@ -88,9 +88,15 @@ const rosterDoc = new GoogleSpreadsheet('14b6VL7hdvtidPtJ5ajSAr3tyJqJAg0SW8WcJsg
 
 async function getPresentUsernames() {
   try {
-    // Authenticate with Google Sheets API
-    await doc.useServiceAccountAuth(creds);
-    await rosterDoc.useServiceAccountAuth(creds);
+    // Authenticate with Google Sheets API using the new method
+    await doc.useServiceAccountAuth({
+      client_email: creds.client_email,
+      private_key: creds.private_key.replace(/\\n/g, '\n'), // Handle newline issues in private key
+    });
+    await rosterDoc.useServiceAccountAuth({
+      client_email: creds.client_email,
+      private_key: creds.private_key.replace(/\\n/g, '\n'),
+    });
 
     // Load the spreadsheets
     await doc.loadInfo();
