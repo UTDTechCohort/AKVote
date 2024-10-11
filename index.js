@@ -5487,7 +5487,8 @@ async function usersVotes(body, client, context, value) {
       voters.map(e1 => {
         console.log(e1);
         allAbsentMindedVoters.forEach((userId, username) => {
-          if (userId === e1) {
+          console.log ('Username: ' + username + " userID: " + userId + " e1: " + e1);
+          if (userId.localeCompare(e1, undefined, { sensitivity: 'base' }) === 0) {
             allAbsentMindedVoters.delete(userId);
             console.log(username + ' Voted!')
           }
