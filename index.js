@@ -127,6 +127,7 @@ async function getPresentUsernames() {
       }
     }
 
+    console.log("Present Usernames: ", presentUsernames);
     return presentUsernames;
   } catch (error) {
     console.error('Error processing spreadsheet:', error);
@@ -5520,6 +5521,7 @@ async function usersVotes(body, client, context, value) {
     try {
       // Get the list of all potential channel voters
       const allPotentialChannelVoters = await getPresentUsernames() || [];
+      console.log('Potential Voters', allPotentialChannelVoters);
   
       // Create the list of absent-minded voters
       const absentMindedVoters = (allVoters || []).filter((e1) => {
