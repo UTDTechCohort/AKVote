@@ -80,6 +80,7 @@ let migrations = null;
 const mutexes = {};
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { JWT } = require('google-auth-library')
 
 // Load service account credentials from a local JSON file
 const creds = require('./service_account.json');
