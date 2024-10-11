@@ -5528,6 +5528,7 @@ async function usersVotes(body, client, context, value) {
         return !allVoters.includes(e1);
       });
 
+      console.log('Absent-Minded Voters:', absentMindedVoters);
       votes.push({
         type: 'context',
         elements: [{
@@ -5539,8 +5540,9 @@ async function usersVotes(body, client, context, value) {
                   }).join(', '),
         }]
       });
-  
-      console.log('Absent-Minded Voters:', absentMindedVoters);
+      
+      console.log('Absent mind vote thing displayed');
+      
       return absentMindedVoters;
     } catch (error) {
       console.error('Error processing voters:', error);
@@ -5561,7 +5563,7 @@ async function usersVotes(body, client, context, value) {
   votes.push({
     type: 'divider',
   });
-  processVoters();
+  await processVoters();
   
 
   try {
