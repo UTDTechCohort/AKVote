@@ -5507,13 +5507,24 @@ async function usersVotes(body, client, context, value) {
   }
   //Gather all potential voters in channel
   //Subtract the current voters to get the voters who haven't voted yet
-  const allPotentialChannelVoters = getPresentUsernames() || [];
-
-  const absentMindedVoters = (allVoters || []).filter((e1) => {
-    return !allPotentialChannelVoters.includes(e1);
-  });
-
-
+  async function processVoters() {
+    try {
+      // Get the list of all potential channel voters
+      const allPotentialChannelVoters = await getPresentUsernames() || [];
+  
+      // Create the list of absent-minded voters
+      const absentMindedVoters = (allVoters || []).filter((e1) => {
+        return !allPotentialChannelVoters.includes(e1);
+      });
+  
+      console.log('Absent-Minded Voters:', absentMindedVoters);
+      return absentMindedVoters;
+    } catch (error) {
+      console.error('Error processing voters:', error);
+    }
+  }
+  
+  processVoters();
 
   console.log('People who have not voted yet:', absentMindedVoters);
 
