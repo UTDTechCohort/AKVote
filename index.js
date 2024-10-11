@@ -5470,6 +5470,8 @@ async function usersVotes(body, client, context, value) {
 
   let allVoters = []
 
+  let allAbsentMindedVoters = await getPresentUsernames() || [];
+
   for (const block of blocks) {
     if (
       block.hasOwnProperty('accessory')
@@ -5479,8 +5481,10 @@ async function usersVotes(body, client, context, value) {
       const voters = poll ? (poll[value.id] || []) : [];
 
       voters.map(e1 => {
-        console.log(e1)
-        allVoters.push(e1)
+        console.log(e1);
+        allVoters.push(e1);
+        console.log("All Voters", allVoters);
+        allAbsentMindedVoters.filter(username => username != e1);
       });
 
       if(value.hasOwnProperty('user_lang'))
@@ -5514,41 +5518,7 @@ async function usersVotes(body, client, context, value) {
         }],
       });
     }
-  }
-  //Gather all potential voters in channel
-  //Subtract the current voters to get the voters who haven't voted yet
-  async function processVoters() {
-    try {
-      // Get the list of all potential channel voters
-      const allPotentialChannelVoters = await getPresentUsernames() || [];
-      console.log('Potential Voters', allPotentialChannelVoters);
-  
-      // Create the list of absent-minded voters
-      const absentMindedVoters = (allPotentialChannelVoters || []).filter((e1) => {
-        return !allVoters.includes(e1);
-      });
-
-      console.log('Absent-Minded Voters:', absentMindedVoters);
-      votes.push({
-        type: 'context',
-        elements: [{
-          type: 'mrkdwn',
-          text: !absentMindedVoters.length
-                ? stri18n(userLang,'info_no_vote')
-                : "Who Has Not Voted Yet \n" + absentMindedVoters.map(el => {
-                    return `<@${el}>`;
-                  }).join(', '),
-        }]
-      });
-      
-      console.log('Absent mind vote thing displayed');
-      
-      return absentMindedVoters;
-    } catch (error) {
-      console.error('Error processing voters:', error);
-    }
-  }
-  
+  }    
   
   votes.push({
     type: 'divider',
@@ -5563,7 +5533,17 @@ async function usersVotes(body, client, context, value) {
   votes.push({
     type: 'divider',
   });
-  await processVoters();
+  votes.push({
+    type: 'context',
+    elements: [{
+      type: 'mrkdwn',
+      text: !allAbsentMindedVoters.length
+            ? stri18n(userLang,'info_no_vote')
+            : "Who Has Not Voted Yet: \n" + allAbsentMindedVoters.map(el => {
+                return `<@${el}>`;
+              }).join(', '),
+    }]
+  });
   
 
   try {
