@@ -91,7 +91,7 @@ console.log('Cred Private Key: ' + creds.private_key);
 
 const serviceAccountAuth = new JWT({
   email: creds.client_email,
-  key: creds.private_key,
+  key: creds.private_key.replace(/\\n/g, '\n'), // Replace escaped newlines
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
@@ -106,7 +106,7 @@ async function getPresentUsernames() {
     await rosterDoc.loadInfo();
 
     // Get the worksheets
-    const rosterSheet = rosterDoc.sheetsByIndex[2]; // 2 corresponds to the third worksheet (zero-indexed)
+    const rosterSheet = rosterDoc.sheetsByIndex[3]; // 3 corresponds to the fourth worksheet (zero-indexed)
     const channelSheet = doc.sheetsByIndex[0]; // Assuming it's the first sheet (zero-indexed)
 
     // Get the data
