@@ -5524,8 +5524,8 @@ async function usersVotes(body, client, context, value) {
       console.log('Potential Voters', allPotentialChannelVoters);
   
       // Create the list of absent-minded voters
-      const absentMindedVoters = (allVoters || []).filter((e1) => {
-        return !allPotentialChannelVoters.includes(e1);
+      const absentMindedVoters = (allPotentialChannelVoters || []).filter((e1) => {
+        return !allVoters.includes(e1);
       });
 
       votes.push({
