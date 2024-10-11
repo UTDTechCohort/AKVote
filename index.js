@@ -5488,7 +5488,8 @@ async function usersVotes(body, client, context, value) {
         console.log(e1);
         allAbsentMindedVoters.forEach((userId, username) => {
           if (userId === e1) {
-            allAbsentMindedVoters.delete(username);
+            allAbsentMindedVoters.delete(userId);
+            console.log(username + ' Voted!')
           }
         });
         console.log('Updated Absent-Minded Voters Map:', Array.from(allAbsentMindedVoters.entries()));
@@ -5547,7 +5548,7 @@ async function usersVotes(body, client, context, value) {
       text: allAbsentMindedVoters.size === 0
         ? stri18n(userLang, 'info_no_vote')
         : "Who Has Not Voted Yet: \n" + 
-          Array.from(allAbsentMindedVoters.values()).map(userId => {
+          Array.from(allAbsentMindedVoters.keys()).map(userId => {
             return `<@${userId}>`;
           }).join(', '),
     }]
