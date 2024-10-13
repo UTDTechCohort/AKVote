@@ -110,7 +110,7 @@ async function getPresentUsernames() {
     const channelSheet = doc.sheetsByIndex[0]; // Assuming it's the first sheet (zero-indexed)
 
     // Get the data
-    const rosterRows = await rosterSheet.getCellsInRange('D2:D99');
+    const rosterRows = await rosterSheet.getCellsInRange('J2:J99');
     const rosterPresent = rosterRows.map(row => row[0]);
 
     const slackRows = await channelSheet.getCellsInRange('F2:F99');
