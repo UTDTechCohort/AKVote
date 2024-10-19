@@ -5544,7 +5544,7 @@ async function usersVotes(body, client, context, value) {
   const no_percentage = noVotes/allAbsentMindedVoters.size;
 
   let voteOutcome = "";
-  if (yes_percentage < crossThreshold && dropThreshold < dropThreshold) {
+  if (yes_percentage < crossThreshold && no_percentage < dropThreshold) {
     voteOutcome = "Not enough votes :loud_sound:";
   }
   else if (yes_percentage >= crossThreshold) {
