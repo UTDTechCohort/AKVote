@@ -5474,15 +5474,20 @@ async function usersVotes(body, client, context, value) {
 
   let totalVoteCount = 0;
 
+  let voteList = [];
+
   let allAbsentMindedVoters = await getPresentUsernames() || new Map();
 
   for (const block of blocks) {
+    
     if (
       block.hasOwnProperty('accessory')
       && block.accessory.hasOwnProperty('value')
     ) {
       const value = JSON.parse(block.accessory.value);
       const voters = poll ? (poll[value.id] || []) : [];
+
+      voteList.push(voters.size());
 
       voters.map(e1 => {
         console.log(e1);
@@ -5503,7 +5508,6 @@ async function usersVotes(body, client, context, value) {
       totalVoteCount += voters.length;
       console.log(block.text.text + "\n" + JSON.stringify(value));
       const splitstring = block.text.text.split("\n");
-
 
       votes.push({
         type: 'divider',
@@ -5527,7 +5531,28 @@ async function usersVotes(body, client, context, value) {
         }],
       });
     }
-  }    
+  }
+  
+  const yesVotes = voteList.get(0);
+
+  const noVotes = voteList.get(1);
+
+  const crossThreshold = 0.75;
+  const dropThreshold = 0.25;
+
+  const yes_percentage = yesVotes/allAbsentMindedVoters.size();
+  const no_percentage = noVotes/allAbsentMindedVoters.size();
+
+  let voteOutcome = "";
+  if (yes_percentage < crossThreshold && dropThreshold < dropThreshold) {
+    voteOutcome = "Not enough votes :loud_sound:";
+  }
+  else if (yes_percentage >= crossThreshold) {
+    voteOutcome = "Yes :white_check_mark:";
+  }
+  else if (no_percentage >= dropThreshold) {
+    voteOutcome = "No :x:";
+  }
   
   votes.push({
     type: 'divider',
@@ -5537,6 +5562,13 @@ async function usersVotes(body, client, context, value) {
     elements: [{
       type: 'mrkdwn',
       text: "Total Number of Votes" + ": " + totalVoteCount.toString(),
+    }],
+  });
+  votes.push({
+    type: 'context',
+    elements: [{
+      type: 'mrkdwn',
+      text: "Vote Outcome" + ": " + voteOutcome,
     }],
   });
   votes.push({
