@@ -5540,8 +5540,8 @@ async function usersVotes(body, client, context, value) {
   const crossThreshold = 0.75;
   const dropThreshold = 0.25;
 
-  const yes_percentage = yesVotes/allAbsentMindedVoters.size();
-  const no_percentage = noVotes/allAbsentMindedVoters.size();
+  const yes_percentage = yesVotes/allAbsentMindedVoters.size;
+  const no_percentage = noVotes/allAbsentMindedVoters.size;
 
   let voteOutcome = "";
   if (yes_percentage < crossThreshold && dropThreshold < dropThreshold) {
