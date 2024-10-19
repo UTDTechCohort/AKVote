@@ -5487,7 +5487,7 @@ async function usersVotes(body, client, context, value) {
       const value = JSON.parse(block.accessory.value);
       const voters = poll ? (poll[value.id] || []) : [];
 
-      voteList.push(voters.size());
+      voteList.push(voters.length);
 
       voters.map(e1 => {
         console.log(e1);
