@@ -5533,9 +5533,9 @@ async function usersVotes(body, client, context, value) {
     }
   }
   
-  const yesVotes = voteList.get(0);
+  const yesVotes = voteList[0];
 
-  const noVotes = voteList.get(1);
+  const noVotes = voteList[1];
 
   const crossThreshold = 0.75;
   const dropThreshold = 0.25;
