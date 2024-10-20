@@ -110,7 +110,7 @@ async function getPresentUsernames() {
     const channelSheet = doc.sheetsByIndex[0]; // Assuming it's the first sheet (zero-indexed)
 
     // Get the data
-    const rosterRows = await rosterSheet.getCellsInRange('J2:J99');
+    const rosterRows = await rosterSheet.getCellsInRange('K2:K99');
     const rosterPresent = rosterRows.map(row => row[0]);
 
     const slackRows = await channelSheet.getCellsInRange('F2:F99');
@@ -5539,19 +5539,22 @@ async function usersVotes(body, client, context, value) {
 
   const crossThreshold = 0.75;
   const dropThreshold = 0.25;
+  let voteOutcome = "No Voters";
 
-  const yes_percentage = yesVotes/allAbsentMindedVoters.size;
-  const no_percentage = noVotes/allAbsentMindedVoters.size;
+  if (allAbsentMindedVoters.size > 0) {
+    const yes_percentage = yesVotes/allAbsentMindedVoters.size;
+    const no_percentage = noVotes/allAbsentMindedVoters.size;
 
-  let voteOutcome = "";
-  if (yes_percentage < crossThreshold && no_percentage < dropThreshold) {
-    voteOutcome = "Not enough votes :loud_sound:";
-  }
-  else if (yes_percentage >= crossThreshold) {
-    voteOutcome = "Yes :white_check_mark:";
-  }
-  else if (no_percentage >= dropThreshold) {
-    voteOutcome = "No :x:";
+    
+    if (yes_percentage < crossThreshold && no_percentage < dropThreshold) {
+      voteOutcome = "Not enough votes :loud_sound:";
+    }
+    else if (yes_percentage >= crossThreshold) {
+      voteOutcome = "Yes :white_check_mark:";
+    }
+    else if (no_percentage >= dropThreshold) {
+      voteOutcome = "No :x:";
+    }
   }
   
   votes.push({
