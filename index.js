@@ -5478,6 +5478,8 @@ async function usersVotes(body, client, context, value) {
 
   let allAbsentMindedVoters = await getPresentUsernames() || new Map();
 
+  let totalVoters = allAbsentMindedVoters.size;
+
   for (const block of blocks) {
     
     if (
@@ -5541,9 +5543,9 @@ async function usersVotes(body, client, context, value) {
   const dropThreshold = 0.25;
   let voteOutcome = "No Voters";
 
-  if (allAbsentMindedVoters.size > 0) {
-    const yes_percentage = yesVotes/allAbsentMindedVoters.size;
-    const no_percentage = noVotes/allAbsentMindedVoters.size;
+  if (totalVoters > 0) {
+    const yes_percentage = yesVotes/totalVoters;
+    const no_percentage = noVotes/totalVoters;
 
     
     if (yes_percentage < crossThreshold && no_percentage < dropThreshold) {
