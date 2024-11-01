@@ -3808,6 +3808,17 @@ async function createModal(context, client, trigger_id,response_url,channel) {
             {
               text: {
                 type: 'mrkdwn',
+                text: "Deliberation Poll"
+              },
+              description: {
+                type: 'mrkdwn',
+                text: "This option auto-fills the deliberation poll context and requirements"
+              },
+              value: 'anonymous'
+            },
+            {
+              text: {
+                type: 'mrkdwn',
                 text: stri18n(appLang,'modal_option_anonymous')
               },
               description: {
