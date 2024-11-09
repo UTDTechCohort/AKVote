@@ -3556,6 +3556,7 @@ async function createModal(context, client, trigger_id,response_url,channel) {
 
     const privateMetadata = {
       user_lang: appLang,
+      isDelibPoll: false,
       anonymous: false,
       limited: false,
       hidden: false,
@@ -3814,7 +3815,7 @@ async function createModal(context, client, trigger_id,response_url,channel) {
                 type: 'mrkdwn',
                 text: "This option auto-fills the deliberation poll context and requirements"
               },
-              value: 'anonymous'
+              value: 'isDelibPoll'
             },
             {
               text: {
@@ -4333,6 +4334,8 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
               const checkedValue = checkedbox[each].value;
               if ('anonymous' === checkedValue) {
                 privateMetadata.anonymous = true;
+              } if ('isDelibPoll' === checkedValue) {
+                privateMetadata.isDelibPoll = true;
               } else if ('limit' === checkedValue) {
                 privateMetadata.limited = true;
               } else if ('hidden' === checkedValue) {
@@ -4381,12 +4384,21 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
 
     if (isNaN(limit)) limit = 1;
     privateMetadata.user_lang = userLang;
+    const isDelibPoll = privateMetadata.isDelibPoll;
     const isAnonymous = privateMetadata.anonymous;
     const isLimited = privateMetadata.limited;
     const isHidden = privateMetadata.hidden;
     const channel = privateMetadata.channel;
     const isAllowUserAddChoice = privateMetadata.user_add_choice;
     const response_url = privateMetadata.response_url;
+
+    if (isDelibPoll) {
+      question = "Should this pledge continue?";
+      options = ["Yes", "No"];
+      isAnonymous = true;
+      isLimited = true;
+      isHidden = true;
+    }
 
     if( (!isUseResponseUrl || !response_url || response_url === "" ) && (privateMetadata.channel===undefined || privateMetadata.channel==null) ) {
       let ackErr = {
@@ -4552,7 +4564,7 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
       return;
     }
 
-    const pollView = await createPollView(teamOrEntId, channel, question, options, isAnonymous, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endTs, userLang, userId, cmd, cmd_via, null, null,false,null);
+    const pollView = await createPollView(teamOrEntId, channel, question, options, isAnonymous, isDelibPoll, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endTs, userLang, userId, cmd, cmd_via, null, null,false,null);
     const blocks = pollView.blocks;
     const pollID = pollView.poll_id;
 
@@ -4761,7 +4773,7 @@ function createCmdFromInfos(question, options, isAnonymous, isLimited, limit, is
   return cmd;
 }
 
-async function createPollView(teamOrEntId,channel, question, options, isAnonymous, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endDateTime, userLang, userId, cmd,cmd_via,cmd_via_ref,cmd_via_note,is_update,exist_poll_id) {
+async function createPollView(teamOrEntId, channel, question, options, isAnonymous, isDelibPoll, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endDateTime, userLang, userId, cmd,cmd_via,cmd_via_ref,cmd_via_note,is_update,exist_poll_id) {
   if (
     !question
     || !options
