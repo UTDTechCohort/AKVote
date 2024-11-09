@@ -3532,9 +3532,11 @@ async function createModal(context, client, trigger_id,response_url,channel) {
     if(teamConfig.hasOwnProperty("app_lang")) appLang = teamConfig.app_lang;
     let tempModalBlockInput = JSON.parse(JSON.stringify(createModalBlockInput(appLang)));
     tempModalBlockInput.block_id = 'choice_0';
+    tempModalBlockInput.optional = true;
 
     let tempModalBlockInput2 = JSON.parse(JSON.stringify(createModalBlockInput(appLang)));
     tempModalBlockInput2.block_id = 'choice_'+uuidv4();
+    tempModalBlockInput2.optional = true;
     let tempModalBlockInputDelete2 = JSON.parse(JSON.stringify(createModalBlockInputDelete(appLang)));
     tempModalBlockInputDelete2.block_id = tempModalBlockInput2.block_id+"_del";
     tempModalBlockInputDelete2.accessory.value = tempModalBlockInput2.block_id;
@@ -3899,6 +3901,7 @@ async function createModal(context, client, trigger_id,response_url,channel) {
             text: stri18n(appLang,'modal_input_question_hint'),
           },
         },
+        optional: true,
         block_id: 'question',
       },
       {
