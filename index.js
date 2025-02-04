@@ -3558,7 +3558,10 @@ async function createModal(context, client, trigger_id,response_url,channel) {
 
     const privateMetadata = {
       user_lang: appLang,
-      isDelibPoll: false,
+      isBidDayPoll: false,
+      isTablePoll: false,
+      isPledgeDelibPoll: false,
+      isRevotePoll: false,
       anonymous: false,
       limited: false,
       hidden: false,
@@ -3811,13 +3814,46 @@ async function createModal(context, client, trigger_id,response_url,channel) {
             {
               text: {
                 type: 'mrkdwn',
-                text: "Deliberation Poll"
+                text: "Bid Day"
               },
               description: {
                 type: 'mrkdwn',
-                text: "This option auto-fills the deliberation poll context and requirements"
+                text: "This option auto-fills the Bid Day poll context and requirements"
               },
-              value: 'isDelibPoll'
+              value: 'isBidDayPoll'
+            },
+            {
+              text: {
+                type: 'mrkdwn',
+                text: "Tabling"
+              },
+              description: {
+                type: 'mrkdwn',
+                text: "This option auto-fills the Tabling poll context and requirements"
+              },
+              value: 'isTablePoll'
+            },
+            {
+              text: {
+                type: 'mrkdwn',
+                text: "Pledge Delib (Midcourt, COH)"
+              },
+              description: {
+                type: 'mrkdwn',
+                text: "This option auto-fills the pledge deliberation poll context and requirements"
+              },
+              value: 'isPledgeDelibPoll'
+            },
+            {
+              text: {
+                type: 'mrkdwn',
+                text: "Revotes"
+              },
+              description: {
+                type: 'mrkdwn',
+                text: "This option auto-fills the revote poll context and requirements"
+              },
+              value: 'isRevotePoll'
             },
             {
               text: {
@@ -4337,8 +4373,14 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
               const checkedValue = checkedbox[each].value;
               if ('anonymous' === checkedValue) {
                 privateMetadata.anonymous = true;
-              } if ('isDelibPoll' === checkedValue) {
-                privateMetadata.isDelibPoll = true;
+              } if ('isBidDayPoll' === checkedValue) {
+                privateMetadata.isBidDayPoll = true;
+              } else if ('isTablePoll' === checkedValue) {
+                privateMetadata.isTablePoll = true;
+              } else if ('isPledgeDelibPoll' === checkedValue) {
+                privateMetadata.isPledgeDelibPoll = true;
+              } else if ('isRevotePoll' === checkedValue) {
+                privateMetadata.isRevotePoll = true;
               } else if ('limit' === checkedValue) {
                 privateMetadata.limited = true;
               } else if ('hidden' === checkedValue) {
@@ -4387,7 +4429,10 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
 
     if (isNaN(limit)) limit = 1;
     privateMetadata.user_lang = userLang;
-    const isDelibPoll = privateMetadata.isDelibPoll;
+    const isBidDayPoll = privateMetadata.isBidDayPoll;
+    const isTablePoll = privateMetadata.isTablePoll;
+    const isPledgeDelibPoll = privateMetadata.isPledgeDelibPoll;
+    const isRevotePoll = privateMetadata.isRevotePoll;
     let isAnonymous = privateMetadata.anonymous;
     let isLimited = privateMetadata.limited;
     let isHidden = privateMetadata.hidden;
@@ -4395,8 +4440,32 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
     const isAllowUserAddChoice = privateMetadata.user_add_choice;
     const response_url = privateMetadata.response_url;
 
-    if (isDelibPoll) {
+    if (isBidDayPoll) {
+      question = "Should we extend this candidate a bid?";
+      options = ["Yes", "No"];
+      isAnonymous = true;
+      isLimited = true;
+      isHidden = true;
+    }
+
+    if (isTablePoll) {
+      question = "Should we table this candidate?";
+      options = ["Yes", "No"];
+      isAnonymous = true;
+      isLimited = true;
+      isHidden = true;
+    }
+
+    if (isPledgeDelibPoll) {
       question = "Should this pledge continue?";
+      options = ["Yes", "No"];
+      isAnonymous = true;
+      isLimited = true;
+      isHidden = true;
+    }
+
+    if (isRevotePoll) {
+      question = "Should we revote on this issue?";
       options = ["Yes", "No"];
       isAnonymous = true;
       isLimited = true;
@@ -4567,7 +4636,7 @@ app.view('modal_poll_submit', async ({ ack, body, view, context,client }) => {
       return;
     }
 
-    const pollView = await createPollView(teamOrEntId, channel, question, options, isAnonymous, isDelibPoll, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endTs, userLang, userId, cmd, cmd_via, null, null,false,null);
+    const pollView = await createPollView(teamOrEntId, channel, question, options, isAnonymous, isBidDayPoll, isTablePoll, isPledgeDelibPoll, isRevotePoll, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endTs, userLang, userId, cmd, cmd_via, null, null,false,null);
     const blocks = pollView.blocks;
     const pollID = pollView.poll_id;
 
@@ -4776,7 +4845,7 @@ function createCmdFromInfos(question, options, isAnonymous, isLimited, limit, is
   return cmd;
 }
 
-async function createPollView(teamOrEntId, channel, question, options, isAnonymous, isDelibPoll, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endDateTime, userLang, userId, cmd,cmd_via,cmd_via_ref,cmd_via_note,is_update,exist_poll_id) {
+async function createPollView(teamOrEntId, channel, question, options, isAnonymous, isBidDayPoll, isTablePoll, isPledgeDelibPoll, isRevotePoll, isLimited, limit, isHidden, isAllowUserAddChoice, isMenuAtTheEnd, isCompactUI, isShowDivider, isShowHelpLink, isShowCommandInfo, isTrueAnonymous, isShowNumberInChoice, isShowNumberInChoiceBtn, endDateTime, userLang, userId, cmd,cmd_via,cmd_via_ref,cmd_via_note,is_update,exist_poll_id) {
   if (
     !question
     || !options
