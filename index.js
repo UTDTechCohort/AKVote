@@ -96,27 +96,27 @@ const serviceAccountAuth = new JWT({
 });
 
 // Initialize the Google Spreadsheets
-const doc = new GoogleSpreadsheet('1TuHM4TZVvA1nxWEB-2vjULfs17QeS1gYceu9DQVo3Gw', serviceAccountAuth);
-const rosterDoc = new GoogleSpreadsheet('14b6VL7hdvtidPtJ5ajSAr3tyJqJAg0SW8WcJsgMJ0Rc', serviceAccountAuth);
+//const doc = new GoogleSpreadsheet('1TuHM4TZVvA1nxWEB-2vjULfs17QeS1gYceu9DQVo3Gw', serviceAccountAuth);
+const rosterDoc = new GoogleSpreadsheet('1sAbBhp_98fb9MPXCrrP9fN6iii2r8ZQgQ0-3Iadt-ic', serviceAccountAuth);
 
 async function getPresentUsernames() {
   try {
     // Load the spreadsheets
-    await doc.loadInfo();
+    //await doc.loadInfo();
     await rosterDoc.loadInfo();
 
     // Get the worksheets
     const rosterSheet = rosterDoc.sheetsByIndex[3]; // 3 corresponds to the fourth worksheet (zero-indexed)
-    const channelSheet = doc.sheetsByIndex[0]; // Assuming it's the first sheet (zero-indexed)
+    const channelSheet = rosterDoc.sheetsByIndex[1]; // Assuming it's the second sheet (zero-indexed)
 
     // Get the data
-    const rosterRows = await rosterSheet.getCellsInRange('Q2:Q127');
+    const rosterRows = await rosterSheet.getCellsInRange('E2:E127');
     const rosterPresent = rosterRows.map(row => row[0]);
 
-    const slackRows = await channelSheet.getCellsInRange('F2:F127');
+    const slackRows = await channelSheet.getCellsInRange('L2:L127');
     const slackNameList = slackRows.map(row => row[0]);
 
-    const memberIDs = await channelSheet.getCellsInRange('E2:E127');
+    const memberIDs = await channelSheet.getCellsInRange('K2:K127');
     const memberIDsList = memberIDs.map(row => row[0]);
 
     // Create a Map of present usernames to user IDs
