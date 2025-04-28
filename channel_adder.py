@@ -2,12 +2,15 @@ import keyboard
 import gspread
 import pyperclip
 
-gc = gspread.oauth()
+credentials = {"installed":{"client_id":"884405910879-2kffgh1taeal188dit5pbk7l1165l47q.apps.googleusercontent.com","project_id":"slack-channel-adder","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["http://localhost"]}}
 
-sh = gc.open("Channel Adder Master List")
-roster = gc.open("Mu Rho Roster Fall 2024")
 
-newlist = roster.get_worksheet(3).batch_get(["F2:F99"]) #gets list of people present at bid day from mu rho roster
+gc, authorized_user = gspread.oauth_from_dict(credentials)
+
+#sh = gc.open("Channel Adder Master List")
+roster = gc.open("Mu Rho Roster Fall 2025")
+
+newlist = roster.get_worksheet(3).batch_get(["J2:J118"]) #gets list of people present at bid day from mu rho roster
 rosterPresent = newlist[0]
 
 
@@ -15,7 +18,7 @@ rosterPresent = newlist[0]
 # presentList = newlist[0]
 # #print(presentList)
 
-newlist = sh.sheet1.batch_get(["E2:E99"]) # gets list of slack names from channel adder master list
+newlist = roster.get_worksheet(1).batch_get(["L2:L128"]) # gets list of slack names from channel adder master list
 slackNameList = newlist[0]
 
 clipboardString = ""

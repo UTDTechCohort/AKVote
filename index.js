@@ -97,7 +97,7 @@ const serviceAccountAuth = new JWT({
 
 // Initialize the Google Spreadsheets
 //const doc = new GoogleSpreadsheet('1TuHM4TZVvA1nxWEB-2vjULfs17QeS1gYceu9DQVo3Gw', serviceAccountAuth);
-const rosterDoc = new GoogleSpreadsheet('1sAbBhp_98fb9MPXCrrP9fN6iii2r8ZQgQ0-3Iadt-ic', serviceAccountAuth);
+const rosterDoc = new GoogleSpreadsheet('1wBRscnAQnb0q_IRQTP0OLwIFeR5BGFEDcutMz7xEKB4', serviceAccountAuth);
 
 async function getPresentUsernames() {
   try {
@@ -110,7 +110,7 @@ async function getPresentUsernames() {
     const channelSheet = rosterDoc.sheetsByIndex[1]; // Assuming it's the second sheet (zero-indexed)
 
     // Get the data
-    const rosterRows = await rosterSheet.getCellsInRange('J2:J127');
+    const rosterRows = await rosterSheet.getCellsInRange('L2:L127');
     const rosterPresent = rosterRows.map(row => row[0]);
 
     const slackRows = await channelSheet.getCellsInRange('L2:L127');
