@@ -110,13 +110,13 @@ async function getPresentUsernames() {
     const channelSheet = rosterDoc.sheetsByIndex[1]; // Assuming it's the second sheet (zero-indexed)
 
     // Get the data
-    const rosterRows = await rosterSheet.getCellsInRange('L2:L127');
+    const rosterRows = await rosterSheet.getCellsInRange('C2:C139');
     const rosterPresent = rosterRows.map(row => row[0]);
 
-    const slackRows = await channelSheet.getCellsInRange('L2:L127');
+    const slackRows = await channelSheet.getCellsInRange('L2:L139');
     const slackNameList = slackRows.map(row => row[0]);
 
-    const memberIDs = await channelSheet.getCellsInRange('K2:K127');
+    const memberIDs = await channelSheet.getCellsInRange('K2:K139');
     const memberIDsList = memberIDs.map(row => row[0]);
 
     // Create a Map of present usernames to user IDs

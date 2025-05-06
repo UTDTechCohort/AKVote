@@ -10,7 +10,7 @@ gc, authorized_user = gspread.oauth_from_dict(credentials)
 #sh = gc.open("Channel Adder Master List")
 roster = gc.open("Mu Rho Roster Fall 2025")
 
-newlist = roster.get_worksheet(3).batch_get(["J2:J118"]) #gets list of people present at bid day from mu rho roster
+newlist = roster.get_worksheet(3).batch_get(["C2:C139"]) #gets list of people present at bid day from mu rho roster
 rosterPresent = newlist[0]
 
 
@@ -18,7 +18,7 @@ rosterPresent = newlist[0]
 # presentList = newlist[0]
 # #print(presentList)
 
-newlist = roster.get_worksheet(1).batch_get(["L2:L128"]) # gets list of slack names from channel adder master list
+newlist = roster.get_worksheet(1).batch_get(["L2:L139"]) # gets list of slack names from channel adder master list
 slackNameList = newlist[0]
 
 clipboardString = ""
