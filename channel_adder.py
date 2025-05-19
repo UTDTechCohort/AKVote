@@ -18,7 +18,7 @@ rosterPresent = newlist[0]
 # presentList = newlist[0]
 # #print(presentList)
 
-newlist = roster.get_worksheet(1).batch_get(["L2:L139"]) # gets list of slack names from channel adder master list
+newlist = roster.get_worksheet(1).batch_get(["L2:L118"]) # gets list of slack names from channel adder master list
 slackNameList = newlist[0]
 
 clipboardString = ""
