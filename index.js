@@ -5676,7 +5676,7 @@ async function usersVotes(body, client, context, value) {
       type: 'mrkdwn',
       text: allAbsentMindedVoters.size === 0
         ? stri18n(userLang, 'info_no_vote')
-        : "Who Has Not Voted Yet: \n" + 
+        : "Missing " + allAbsentMindedVoters.size + " votes! :angry: :angry:\n" + 
           Array.from(allAbsentMindedVoters.keys()).map(userId => {
             return `<@${userId}>`;
           }).join(', '),
