@@ -5634,23 +5634,18 @@ async function usersVotes(body, client, context, value) {
 
   const noVotes = voteList[1];
 
-  const crossThreshold = 0.75;
-  const dropThreshold = 0.25;
+  const crossThreshold = Math.ceil(0.75 * totalVoters);
+  const dropThreshold = Math.floor(0.25 * totalVoters);
   let voteOutcome = "No Voters";
 
   if (totalVoters > 0) {
-    const yes_percentage = yesVotes/totalVoters;
-    const no_percentage = noVotes/totalVoters;
-
-    
-    if (yes_percentage < crossThreshold && no_percentage < dropThreshold) {
-      voteOutcome = "Not enough votes :loud_sound:";
-    }
-    else if (yes_percentage >= crossThreshold) {
-      voteOutcome = "Yes :white_check_mark:";
-    }
-    else if (no_percentage >= dropThreshold) {
+    //Roberts Rule says to round down
+    if (noVotes >= dropThreshold) {
       voteOutcome = "No :x:";
+    } else if (yesVotes >= crossThreshold) {
+      voteOutcome = "Yes :white_check_mark:";
+    } else {
+      voteOutcome = "Not enough votes :loud_sound:";
     }
   }
   
