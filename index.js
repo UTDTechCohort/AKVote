@@ -5635,7 +5635,8 @@ async function usersVotes(body, client, context, value) {
   const noVotes = voteList[1];
 
   const crossThreshold = Math.ceil(0.75 * totalVoters);
-  const dropThreshold = Math.floor(0.25 * totalVoters);
+  //Handles edge case where less than 4 voters
+  const dropThreshold = Math.max(1,Math.floor(0.25 * totalVoters));
   let voteOutcome = "No Voters";
 
   if (totalVoters > 0) {
