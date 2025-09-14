@@ -106,7 +106,7 @@ async function getPresentUsernames() {
     await rosterDoc.loadInfo();
 
     // Get the worksheets
-    const rosterSheet = rosterDoc.sheetsByIndex[3]; // 3 corresponds to the fourth worksheet (zero-indexed)
+    const rosterSheet = rosterDoc.sheetsByIndex[4]; // 4 corresponds to the fifth worksheet (zero-indexed)
     const channelSheet = rosterDoc.sheetsByIndex[1]; // Assuming it's the second sheet (zero-indexed)
 
     // Get the data
